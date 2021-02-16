@@ -1,12 +1,28 @@
-const router                                 = require('express').Router();
-
-//get all posts
-router.post('/', async(req,res) => {
-
+const router            = require('express').Router();
+const verify            = require('./verifyToken');
+const postController    = require('../controllers/postController');   
 
 
-})
+const postRoute = (dependecies) => {
+
+    const controller = postController(dependecies);
+
+    router.route('/')
+        .get(controller.getAllPost)
+        .post(verify , controller.addNewPost);
+    
+    router.route('/:postId')
+        .get(verify, controller.getPostById);
+
+    router.route('/delete/:postId')
+        .delete(verify ,controller.removePost);
+
+    return router
+}
 
 
 
-module.exports = router;
+
+
+module.exports = postRoute;
+
