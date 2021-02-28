@@ -3,7 +3,7 @@ const {User}   = require('../models');
 
 module.exports =  class UserRepository {
 
-    //  constructor() {}
+    constructor() {}
 
     async createUser(object){
         

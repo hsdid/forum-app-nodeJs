@@ -3,7 +3,7 @@ const {Post}   = require('../models');
 
 module.exports = class PostRepository {
 
-    //  constructor() {}
+    constructor() {}
 
     async createPost(object){
         

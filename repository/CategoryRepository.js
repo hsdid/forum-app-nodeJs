@@ -3,7 +3,7 @@ const {Category}   = require('../models');
 
 module.exports = class CategoryRepository {
 
-    //  constructor() {}
+    constructor() {}
 
 
     async remove(categoryId) {

@@ -1,15 +1,17 @@
 const { verify }         = require('jsonwebtoken');
 const { postValidation } = require('../validation/postValidation');
-const PostRepository     = require('../repository/PostRepository');
-const UserRepository     = require('../repository/UserRepository');
-const CategoryRepository = require('../repository/CategoryRepository');
-
+//use-cases
+const AddPost = require('../use-cases/post/AddPost');
+const RemovePost = require('../use-cases/post/RemovePost');
+const getAllPost = require('../use-cases/post/GetAllPosts');
+const GetAllPosts = require('../use-cases/post/GetAllPosts');
+const GetPost    = require('../use-cases/post/GetPost');
 
 module.exports = (dependecies) => {
 
-    postRepository     = new PostRepository();
-    userRepository     = new UserRepository();
-    categoryRepository = new CategoryRepository();
+    const userRepository = dependecies.UserRepository;
+    const postRepository = dependecies.PostRepository;
+    const categoryRepository = dependecies.CategoryRepository;
 
     const addNewPost = async (req,res,next) => {
         
@@ -21,24 +23,13 @@ module.exports = (dependecies) => {
         const { title, content, categoryId } = req.body;
         const userId = req.user.id;
 
-        //Check if post with same title exists
-        const emailTitle = await postRepository.findByTitle(title);
-        if(emailTitle) return res.status(400).send('Same title already exists');
-        
-        const user     = await userRepository.findById(userId);
-        if (!user) return res.status(400).send('Something went wrong');
+        const AddPostCommand = AddPost(postRepository, userRepository, categoryRepository);
+        AddPostCommand.Execute(title, content, categoryId, userId).then((response) => {
+            res.send(response);
 
-        const category = await categoryRepository.findById(categoryId);
-        if (!category) return res.status(400).send('Something went wrong');
-
-        try {
-            
-            const post = await postRepository.createPost({ title, content, userId:user.id, categoryId:category.id});
-            res.status(200).send(post);
-            
-        } catch (err) {
-            res.status(400).send(err);
-        }
+        }, (err) => {
+            next(err);
+        });
     }
 
 
@@ -46,33 +37,37 @@ module.exports = (dependecies) => {
 
         const postId = req.params.postId;
 
-        const post  = await postRepository.findById(postId);
-        if (!post) return res.status(400).send('Something went wrong');
-
-        try {
-            const deletedPost = await postRepository.remove(post.id)
-            res.status(200).send(deletedPost);
-        } catch (err) {
-            res.status(400).send(err);
-        }
+        const RemovePostCommand = RemovePost(postRepository);
+        RemovePostCommand.Execute(postId).then((response) => {
+            res.send(response);
+        }, (err) => {
+            res.send(err);
+        });
     }
+
 
     const getPostById = async (req,res) => {
         const postId = req.params.postId;
 
-        const post  = await postRepository.findById(postId);
-        if (!post) return res.status(400).send('Something went wrong');
-        
-        res.status(200).send(post);
+        const GetPostCommand = GetPost(postRepository);
+        GetPostCommand.Execute(postId).then((response) => {
+            res.send(response);
+        }, (err) => {
+            res.send(err);
+        });
+       
     }
 
     const getAllPost = async (req,res) => {
 
-        const posts = await postRepository.findAll();
-        if (!posts) return res.status(400).send('Something went wrong');
-
-        res.status(200).send(posts); 
-    }
+        const GetAllPostsCommand = GetAllPosts(postRepository);
+        GetAllPostsCommand.Execute().then((response ) => {
+            res.send(response);
+        }, (err) => {
+            
+            res.send(err);
+        })
+    };
 
     return {
             addNewPost,
