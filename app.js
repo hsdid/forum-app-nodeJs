@@ -9,6 +9,7 @@ const dependecies   = require('./dependecies/repository');
 //Import Routes 
 const authRoute                         = require('./routes/auth');
 const postRoute                         = require('./routes/post');
+const commnetRoute                      = require('./routes/comment');
 
 
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use(express.json());
 //Route prefix
 app.use('/api/user', authRoute);
 app.use('/api/post', postRoute(dependecies));
+app.use('/api/post', commnetRoute(dependecies));
 
 dotenv.config();
 
