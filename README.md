@@ -1,4 +1,4 @@
-# forum-nodeJs
+# Forum App implemented with clean architecture
 Simple Application 
 implementing clean architecture using express and sequelize
 
