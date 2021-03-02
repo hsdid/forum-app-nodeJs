@@ -13,9 +13,6 @@ const postRoute = (dependecies) => {
     
     router.route('/:postId')
         .get(verify, controller.getPostById);
-    
-    // router.route('/:postId/comment')
-    //     .get(verify, )
 
     router.route('/delete/:postId')
         .delete(verify ,controller.removePost);

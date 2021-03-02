@@ -10,12 +10,14 @@ const commentRoute = (dependecies) => {
     router.route('/comment')
         .post(verify , controller.addNewComment);
     
+    router.route('/:postId/comments')
+        .get(verify, controller.getAllCommentsFromPost);
     
+    router.route('/comment/delete/:commentId')
+        .delete(verify ,controller.removeComment);
 
     return router
 }
-
-
 
 
 

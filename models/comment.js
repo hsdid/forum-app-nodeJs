@@ -22,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.STRING
   }, {
     sequelize,
+    tableName: 'comments',
     modelName: 'Comment',
+
   });
   return Comment;
 };

@@ -7,7 +7,6 @@ module.exports = class CommentRepository {
 
 
     async createComment(object){
-        
         const {authorId, postId, content } = object;
         const comment = await Comment.create({authorId, postId, content});
         
@@ -15,28 +14,28 @@ module.exports = class CommentRepository {
     }
 
     async remove(commentId) {
-        
-        const comment = await Comment.findOne({where:{id: commentId}});
-        await Comment.destroy();
+       
 
-        return comment;
+        await Comment.destroy({where: {id: commentId}});
+
+        return true;
     }
 
     async findAll() {
-
         const comments = await Comment.findAll();
+
         return comments;
     }
  
     async findById(commentId) {
-        
         const comment =  Comment.findOne({where:{id: commentId}});
+
         return comment;
     }
 
     async findByName(data) {
-
         const comment =  Comment.findOne({where:{name: data}});
+        
         return comment;
     }
 
