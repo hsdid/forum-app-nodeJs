@@ -15,7 +15,7 @@ const commnetRoute                      = require('./routes/comment');
 app.use(express.json());
 
 //Route prefix
-app.use('/api/user', authRoute);
+app.use('/api/user', authRoute(dependecies));
 app.use('/api/post', postRoute(dependecies));
 app.use('/api/post', commnetRoute(dependecies));
 
