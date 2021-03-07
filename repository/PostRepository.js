@@ -13,6 +13,20 @@ module.exports = class PostRepository {
         return post;
     }
 
+    async editPost({postId, title, content, categoryId}){
+        
+        
+        
+        
+        const post = Post.update({title: title,
+                                 content: content,
+                                 categoryId: categoryId
+                                },{where: {id: postId}});
+        
+        return post;
+    }
+
+
     async remove(postId) {
         
         const post = await Post.findOne({where:{id: postId}});

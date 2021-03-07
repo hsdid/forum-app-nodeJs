@@ -7,6 +7,7 @@ const RemovePost  = require('../use-cases/post/RemovePost' );
 const getAllPost  = require('../use-cases/post/GetAllPosts');
 const GetAllPosts = require('../use-cases/post/GetAllPosts');
 const GetPost     = require('../use-cases/post/GetPost'    );
+const Edit        = require('../use-cases/post/EditPost');
 
 module.exports = (dependecies) => {
 
@@ -31,7 +32,27 @@ module.exports = (dependecies) => {
         }, (err) => {
             next(err);
         });
-    }
+    };
+
+    const editPost = async (req,res,next) => {
+        
+       
+        //Validate data
+         const {error} = postValidation(req.body);
+         if (error) return res.status(400).send(error.details[0].message); 
+        
+        
+         const {title, content, categoryId } = req.body;
+         const postId = req.params.postId;
+        
+         const EditCommand = Edit(postRepository, categoryRepository);
+         EditCommand.Execute(postId, title, content, categoryId).then((response) => {
+             res.send(response);
+ 
+         }, (err) => {
+             next(err);
+         });
+     };
 
 
     const removePost = async (req,res) => {
@@ -44,12 +65,12 @@ module.exports = (dependecies) => {
         }, (err) => {
             res.send(err);
         });
-    }
+    };
 
 
     const getPostById = async (req,res) => {
         const postId = req.params.postId;
-
+        
         const GetPostCommand = GetPost(postRepository);
         GetPostCommand.Execute(postId).then((response) => {
             res.send(response);
@@ -57,7 +78,7 @@ module.exports = (dependecies) => {
             res.send(err);
         });
        
-    }
+    };
 
     const getAllPost = async (req,res) => {
 
@@ -74,7 +95,8 @@ module.exports = (dependecies) => {
             addNewPost,
             removePost,
             getPostById,
-            getAllPost
+            getAllPost,
+            editPost
             }
 };
 

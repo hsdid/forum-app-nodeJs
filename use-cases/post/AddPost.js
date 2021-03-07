@@ -1,5 +1,3 @@
-
-
 module.exports = (postRepository, userRepository, categoryRepository) => {
 
     async function Execute(title, content, categoryId, userId) {

@@ -13,6 +13,9 @@ const postRoute = (dependecies) => {
     
     router.route('/:postId')
         .get(verify, controller.getPostById);
+        
+    router.route('/edit/:postId')
+        .put(verify, controller.editPost);
 
     router.route('/delete/:postId')
         .delete(verify ,controller.removePost);
