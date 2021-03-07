@@ -4,7 +4,6 @@ const { postValidation } = require('../validation/postValidation');
 //use-cases
 const AddPost     = require('../use-cases/post/AddPost'    );
 const RemovePost  = require('../use-cases/post/RemovePost' );
-const getAllPost  = require('../use-cases/post/GetAllPosts');
 const GetAllPosts = require('../use-cases/post/GetAllPosts');
 const GetPost     = require('../use-cases/post/GetPost'    );
 const Edit        = require('../use-cases/post/EditPost');
