@@ -7,6 +7,7 @@ const RemovePost  = require('../use-cases/post/RemovePost' );
 const GetAllPosts = require('../use-cases/post/GetAllPosts');
 const GetPost     = require('../use-cases/post/GetPost'    );
 const Edit        = require('../use-cases/post/EditPost');
+//const postOwner    = require('../permission/postOwner');
 
 module.exports = (dependecies) => {
 
@@ -40,16 +41,19 @@ module.exports = (dependecies) => {
          const {error} = postValidation(req.body);
          if (error) return res.status(400).send(error.details[0].message); 
         
-        
+
          const {title, content, categoryId } = req.body;
          const postId = req.params.postId;
+         const userId = req.user.id;
+
+
         
          const EditCommand = Edit(postRepository, categoryRepository);
-         EditCommand.Execute(postId, title, content, categoryId).then((response) => {
+         EditCommand.Execute(userId, postId, title, content, categoryId).then((response) => {
              res.send(response);
  
          }, (err) => {
-             next(err);
+             res.send(err);
          });
      };
 
@@ -57,9 +61,10 @@ module.exports = (dependecies) => {
     const removePost = async (req,res) => {
 
         const postId = req.params.postId;
-
+        const userId = req.user.id;
+        
         const RemovePostCommand = RemovePost(postRepository);
-        RemovePostCommand.Execute(postId).then((response) => {
+        RemovePostCommand.Execute(userId, postId).then((response) => {
             res.send(response);
         }, (err) => {
             res.send(err);

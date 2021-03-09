@@ -1,15 +1,21 @@
 module.exports = (postRepository) => {
 
-    async function Execute(postId) {
+    async function Execute(userId, postId) {
 
         const post  = await postRepository.findById(postId);
-        if (!post) return res.status(400).send('Something went wrong');
-
+        if (!post) return 'Something went wrong';
+        
+        // Owner permission
+        if (userId != post.userId) {
+            return 'Cant delete post';
+        } 
+    
         try {
             const deletedPost = await postRepository.remove(post.id)
-            res.status(200).send(deletedPost);
+            return deletedPost;
         } catch (err) {
-            res.status(400).send(err);
+            return err;
+            
         }
     }
 

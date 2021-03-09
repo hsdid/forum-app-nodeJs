@@ -1,7 +1,7 @@
-const { response } = require("express");
-const AddComment   = require("../use-cases/comment/AddComment");
-const GetAll       = require("../use-cases/comment/GetAll");
-const Remove       = require("../use-cases/comment/Remove");
+const AddComment   = require('../use-cases/comment/AddComment');
+const GetAll       = require('../use-cases/comment/GetAll');
+const Remove       = require('../use-cases/comment/Remove');
+
 
 module.exports = (dependecies) => {
 
@@ -33,7 +33,7 @@ module.exports = (dependecies) => {
             res.send(response);
         }, (err) => {
             next(err);
-        })
+        });
     }
 
     const removeComment = async (req,res,next) => {
@@ -47,7 +47,7 @@ module.exports = (dependecies) => {
             res.send(response);
         }, (err) => {
             next(err);
-        })
+        });
 
     }
     
