@@ -1,6 +1,7 @@
 const AddComment   = require('../use-cases/comment/AddComment');
 const GetAll       = require('../use-cases/comment/GetAll');
 const Remove       = require('../use-cases/comment/Remove');
+const Edit         = require('../use-cases/comment/Edit');
 
 
 module.exports = (dependecies) => {
@@ -36,12 +37,23 @@ module.exports = (dependecies) => {
         });
     }
 
+    const editComment = async (req,res,next) => {
+        const commentId = req.params.commentId;
+        const {content} = req.body;
+        const userId = req.user.id;
+
+        const EditCommentCommend = Edit(commentRepository);
+        EditCommentCommend.Execute(commentId, content, userId).then((response) => {
+            res.send(response);
+        }, (err) => {
+            next(err);
+        });
+    }
+
     const removeComment = async (req,res,next) => {
 
         const commentId = req.params.commentId;
         
-
-
         const RemoveComment = Remove(commentRepository);
         RemoveComment.Execute(commentId).then((response) => {
             res.send(response);
@@ -55,6 +67,7 @@ module.exports = (dependecies) => {
     return {
             addNewComment,
             getAllCommentsFromPost,
-            removeComment
+            removeComment,
+            editComment
             }
 };

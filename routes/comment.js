@@ -15,6 +15,9 @@ const commentRoute = (dependecies) => {
     
     router.route('/comment/delete/:commentId')
         .delete(verify ,controller.removeComment);
+    
+    router.route('/comment/edit/:commentId')
+        .put(verify, controller.editComment);
 
     return router
 }

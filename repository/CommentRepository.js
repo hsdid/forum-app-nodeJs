@@ -15,10 +15,18 @@ module.exports = class CommentRepository {
 
     async remove(commentId) {
        
-
         await Comment.destroy({where: {id: commentId}});
 
         return true;
+    }
+
+    async edit(commentId, content) {
+        console.log(content)
+        const comment = await Comment.update({
+            content: content}, 
+            {where: {id: commentId}})
+
+        return comment;
     }
 
     async findAll() {
